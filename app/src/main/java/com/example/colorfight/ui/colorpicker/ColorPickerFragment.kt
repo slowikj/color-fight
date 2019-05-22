@@ -1,6 +1,7 @@
-package com.example.colorfight.ui
+package com.example.colorfight.ui.colorpicker
 
 import com.example.colorfight.R
+import com.example.colorfight.ui.base.BaseFragment
 
 class ColorPickerFragment : BaseFragment() {
 

@@ -1,11 +1,12 @@
 package com.example.colorfight.ui
 
 import android.os.Bundle
-import android.view.MenuItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import android.widget.TextView
 import com.example.colorfight.R
+import com.example.colorfight.ui.about.AboutFragment
+import com.example.colorfight.ui.colorpicker.ColorPickerFragment
+import com.example.colorfight.ui.statistics.StatisticsFragment
 import com.example.colorfight.utils.addFragment
 import com.example.colorfight.utils.popLastFragment
 import kotlinx.android.synthetic.main.activity_main.*

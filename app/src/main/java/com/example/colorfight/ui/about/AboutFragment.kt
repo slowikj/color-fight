@@ -1,6 +1,7 @@
-package com.example.colorfight.ui
+package com.example.colorfight.ui.about
 
 import com.example.colorfight.R
+import com.example.colorfight.ui.base.BaseFragment
 
 class AboutFragment : BaseFragment() {
 

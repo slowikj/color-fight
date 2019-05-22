@@ -1,4 +1,4 @@
-package com.example.colorfight.ui
+package com.example.colorfight.ui.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
