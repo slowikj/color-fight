@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Color Fight</string>
+    <string name="title_color_picker">Colors</string>
+    <string name="title_statistics">Statistics</string>
+    <string name="title_about">About</string>
+</resources>
