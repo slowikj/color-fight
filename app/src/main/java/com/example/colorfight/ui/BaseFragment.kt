@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
-abstract class BaseFragment(): Fragment() {
+abstract class BaseFragment : Fragment() {
 
     protected abstract val layoutId: Int
 
