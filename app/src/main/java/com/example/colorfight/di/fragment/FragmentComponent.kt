@@ -1,7 +1,9 @@
 package com.example.colorfight.di.fragment
 
-import androidx.fragment.app.Fragment
 import com.example.colorfight.di.app.ApplicationComponent
+import com.example.colorfight.ui.about.AboutFragment
+import com.example.colorfight.ui.colorpicker.ColorPickerFragment
+import com.example.colorfight.ui.statistics.StatisticsFragment
 import dagger.Component
 
 @PerFragment
@@ -11,6 +13,10 @@ import dagger.Component
 )
 interface FragmentComponent {
 
-    fun inject(fragment: Fragment)
+    fun inject(colorPickerFragment: ColorPickerFragment)
+
+    fun inject(statisticsFragment: StatisticsFragment)
+
+    fun inject(aboutFragment: AboutFragment)
 
 }

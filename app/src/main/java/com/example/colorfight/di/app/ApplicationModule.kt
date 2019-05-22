@@ -11,6 +11,7 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -25,7 +26,7 @@ class ApplicationModule(private val application: Application) {
 
         const val DEFAULT_CONNECTION_TIMEOUT: Long = 5000
 
-        const val API_URI: String = "https://ibicf94w7l.execute-api.us-east-2.amazonaws.com/default/serverlessrepo-dynamodb-p-dynamodbprocessstreampyt-1FQDIKPPQUHRA/"
+        const val API_URI: String = "https://ibicf94w7l.execute-api.us-east-2.amazonaws.com/default/"
     }
 
     @Provides
@@ -73,6 +74,7 @@ class ApplicationModule(private val application: Application) {
         OkHttpClient.Builder()
             .readTimeout(DEFAULT_READ_TIMEOUT, TimeUnit.MILLISECONDS)
             .connectTimeout(DEFAULT_CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
 
 

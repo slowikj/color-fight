@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.colorfight.ColorApp
 import com.example.colorfight.di.fragment.DaggerFragmentComponent
 import com.example.colorfight.di.fragment.FragmentComponent
+import com.example.colorfight.di.fragment.FragmentModule
 
 abstract class BaseFragment : Fragment() {
 
@@ -16,17 +17,27 @@ abstract class BaseFragment : Fragment() {
 
     val fragmentComponent: FragmentComponent by lazy {
         DaggerFragmentComponent.builder()
+            .fragmentModule(FragmentModule(this))
             .applicationComponent((activity!!.application as ColorApp).applicationComponent)
             .build()
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        fragmentComponent.inject(this)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        attachPresenter()
     }
+
+    abstract fun attachPresenter()
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? =
             inflater.inflate(layoutId, container, false)
+
+    override fun onDestroyView() {
+        detachPresenter()
+        super.onDestroyView()
+    }
+
+    abstract fun detachPresenter()
 }

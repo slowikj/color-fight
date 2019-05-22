@@ -6,7 +6,6 @@ import com.example.colorfight.utils.prepareNoneToApiObservable
 import com.example.colorfight.utils.prepareObjectToCompletable
 import io.reactivex.Completable
 import io.reactivex.Observable
-import javax.inject.Inject
 
 class AppColorManager (private val colorApiService: ColorApiService) : ColorManager {
 

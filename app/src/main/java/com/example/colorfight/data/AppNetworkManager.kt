@@ -4,7 +4,6 @@ import com.example.colorfight.data.color.ColorManager
 import com.example.colorfight.data.color.model.ColorCounts
 import io.reactivex.Completable
 import io.reactivex.Observable
-import javax.inject.Inject
 
 class AppNetworkManager (private val colorManager: ColorManager): NetworkManager {
 

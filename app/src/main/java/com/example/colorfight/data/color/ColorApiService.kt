@@ -9,9 +9,9 @@ import retrofit2.http.POST
 
 interface ColorApiService {
 
-    @GET("/")
+    @GET("serverlessrepo-dynamodb-p-dynamodbprocessstreampyt-1FQDIKPPQUHRA")
     fun getColors(): Observable<ColorCountsDTO>
 
-    @POST("/")
+    @POST("serverlessrepo-dynamodb-p-dynamodbprocessstreampyt-1FQDIKPPQUHRA")
     fun incrementColors(@Body colorCounts: ColorCountsDTO): Completable
 }
