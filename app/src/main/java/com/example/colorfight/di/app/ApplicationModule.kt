@@ -5,17 +5,11 @@ import android.content.Context
 import com.example.colorfight.data.AppNetworkManager
 import com.example.colorfight.data.NetworkManager
 import com.example.colorfight.data.color.AppColorManager
-import com.example.colorfight.data.color.ColorApiService
 import com.example.colorfight.data.color.ColorManager
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.CallAdapter
-import retrofit2.Converter
-import retrofit2.Retrofit
-import retrofit2.converter.jackson.JacksonConverterFactory
 import java.util.concurrent.TimeUnit
 
 @Module
@@ -26,12 +20,14 @@ class ApplicationModule(private val application: Application) {
 
         const val DEFAULT_CONNECTION_TIMEOUT: Long = 5000
 
-        const val API_URI: String = "https://ibicf94w7l.execute-api.us-east-2.amazonaws.com/default/"
+        const val DEFAULT_WRITE_TIMEOUT: Long = 5000
+
+        const val SOCKET_BASE_URL: String = "wss://n0obo1h1sj.execute-api.eu-central-1.amazonaws.com/colors"
     }
 
     @Provides
     @ApiUri
-    fun provideApiUri(): String = API_URI
+    fun provideApiUri(): String = SOCKET_BASE_URL
 
     @Provides
     @ApplicationContext
@@ -47,26 +43,8 @@ class ApplicationModule(private val application: Application) {
 
     @PerApp
     @Provides
-    fun provideColorManager(colorApiService: ColorApiService): ColorManager =
-        AppColorManager(colorApiService)
-
-    @PerApp
-    @Provides
-    fun provideColorApiService(retrofit: Retrofit): ColorApiService =
-        retrofit.create(ColorApiService::class.java)
-
-    @PerApp
-    @Provides
-    fun provideRetrofitClient(@ApiUri apiUri: String,
-                              okHttpClient: OkHttpClient,
-                              converterFactory: Converter.Factory,
-                              callAdapterFactory: CallAdapter.Factory): Retrofit =
-            Retrofit.Builder()
-                .client(okHttpClient)
-                .baseUrl(apiUri)
-                .addCallAdapterFactory(callAdapterFactory)
-                .addConverterFactory(converterFactory)
-                .build()
+    fun provideColorManager(): ColorManager =
+        AppColorManager()
 
     @PerApp
     @Provides
@@ -74,18 +52,9 @@ class ApplicationModule(private val application: Application) {
         OkHttpClient.Builder()
             .readTimeout(DEFAULT_READ_TIMEOUT, TimeUnit.MILLISECONDS)
             .connectTimeout(DEFAULT_CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
+            .writeTimeout(DEFAULT_WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
 
-
-    @PerApp
-    @Provides
-    fun provideConverterFactory(): Converter.Factory =
-        JacksonConverterFactory.create()
-
-    @PerApp
-    @Provides
-    fun provideCallAdapterFactory(): CallAdapter.Factory =
-        RxJava2CallAdapterFactory.create()
 }
 

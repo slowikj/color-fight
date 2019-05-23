@@ -16,4 +16,7 @@ object ColorCountsConverter :
             green = ui.green,
             blue = ui.blue
         )
+
+    fun convertToRequest(ui: ColorCounts): ColorRequestDTO =
+            ColorRequestDTO(colors = convertToDTO(ui))
 }

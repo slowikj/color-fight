@@ -19,15 +19,15 @@ class ColorPickerFragment
         get() = R.layout.color_picker_fragment_layout
 
     override fun updateRedCounter(value: Long) {
-        redButton.text = value.toString()
+        activity?.runOnUiThread {  redButton.text = value.toString() }
     }
 
     override fun updateGreenCounter(value: Long) {
-        greenButton.text = value.toString()
+        activity?.runOnUiThread { greenButton.text = value.toString()  }
     }
 
     override fun updateBlueCounter(value: Long) {
-        blueButton.text = value.toString()
+        activity?.runOnUiThread { blueButton.text = value.toString() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
