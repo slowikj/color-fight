@@ -13,13 +13,7 @@ import com.example.colorfight.data.socket.EventSocketObservable
 import com.fasterxml.jackson.databind.ObjectMapper
 import dagger.Module
 import dagger.Provides
-import org.java_websocket.client.WebSocketClient
 import java.net.URI
-import java.security.SecureRandom
-import java.security.cert.X509Certificate
-import javax.net.ssl.SSLContext
-import javax.net.ssl.TrustManager
-import javax.net.ssl.X509TrustManager
 
 @Module
 class ApplicationModule(private val application: Application) {
