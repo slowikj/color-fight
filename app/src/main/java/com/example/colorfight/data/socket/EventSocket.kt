@@ -1,19 +1,18 @@
 package com.example.colorfight.data.socket
 
-import org.java_websocket.WebSocket
 import org.java_websocket.client.WebSocketClient
+import org.java_websocket.enums.ReadyState
 import org.java_websocket.handshake.ServerHandshake
 import java.net.URI
 
 class EventSocket<INPUT_MESSAGE, OUTPUT_MESSAGE>(
     private val uri: URI,
-    private val wsf: WebSocketClient.WebSocketClientFactory,
     private val inputMessageSerializer: (INPUT_MESSAGE) -> String,
     private val outputMessageDeserializer: (String) -> OUTPUT_MESSAGE
 ) {
 
     private companion object {
-        val validSocketStates = setOf(WebSocket.READYSTATE.OPEN, WebSocket.READYSTATE.CONNECTING)
+        val validSocketStates = setOf(ReadyState.OPEN)
     }
 
     private var innerWebSocket: WebSocketClient? = null
@@ -42,7 +41,7 @@ class EventSocket<INPUT_MESSAGE, OUTPUT_MESSAGE>(
     @Synchronized
     fun removeOnSocketListener(listener: OnSocketListener<OUTPUT_MESSAGE>) {
         onSocketListeners.remove(listener)
-        if (onSocketListeners.size == 0) {
+        if (onSocketListeners.size == 0 && webSocket.connection.isOpen) {
             webSocket.close()
         }
     }
@@ -76,7 +75,6 @@ class EventSocket<INPUT_MESSAGE, OUTPUT_MESSAGE>(
                 onSocketListeners.forEach { it.onError(ex) }
             }
         }
-        x.setWebSocketFactory(wsf)
         return x
     }
 
