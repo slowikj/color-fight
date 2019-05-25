@@ -34,7 +34,7 @@ class EventSocket<INPUT_MESSAGE, OUTPUT_MESSAGE>(
     @Synchronized
     fun addOnSocketListener(listener: OnSocketListener<OUTPUT_MESSAGE>) {
         onSocketListeners.add(listener)
-        if(onSocketListeners.size == 1) {
+        if (onSocketListeners.size == 1) {
             webSocket.connectBlocking()
         }
     }
@@ -42,7 +42,7 @@ class EventSocket<INPUT_MESSAGE, OUTPUT_MESSAGE>(
     @Synchronized
     fun removeOnSocketListener(listener: OnSocketListener<OUTPUT_MESSAGE>) {
         onSocketListeners.remove(listener)
-        if(onSocketListeners.size == 0) {
+        if (onSocketListeners.size == 0) {
             webSocket.close()
         }
     }
@@ -55,8 +55,8 @@ class EventSocket<INPUT_MESSAGE, OUTPUT_MESSAGE>(
         }
     }
 
-    private fun createWebSocket() =
-        object : WebSocketClient(uri) {
+    private fun createWebSocket(): WebSocketClient {
+        val x = object : WebSocketClient(uri) {
             override fun onOpen(handshakedata: ServerHandshake?) {
                 waitingMessages.forEach { send(inputMessageSerializer(it)) }
                 waitingMessages.clear()
@@ -64,6 +64,7 @@ class EventSocket<INPUT_MESSAGE, OUTPUT_MESSAGE>(
 
             override fun onClose(code: Int, reason: String?, remote: Boolean) {
                 onSocketListeners.forEach { it.onClose(code, reason, remote) }
+                onSocketListeners.clear()
             }
 
             override fun onMessage(message: String) {
@@ -74,9 +75,10 @@ class EventSocket<INPUT_MESSAGE, OUTPUT_MESSAGE>(
             override fun onError(ex: Exception) {
                 onSocketListeners.forEach { it.onError(ex) }
             }
-        }.apply {
-            setWebSocketFactory(wsf)
         }
+        x.setWebSocketFactory(wsf)
+        return x
+    }
 
     interface OnSocketListener<OUTPUT_MESSAGE> {
         fun onMessage(message: OUTPUT_MESSAGE)

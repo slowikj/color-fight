@@ -14,12 +14,14 @@ class ColorPickerPresenter<V : ColorPickerContract.View> @Inject constructor(pri
 
     override fun attach(view: V) {
         super.attach(view)
-        compositeDisposable?.add(networkManager.getColorsObservable()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {colorCounts -> onColorChanged(colorCounts)},
-                {},
-                {}))
+        compositeDisposable?.add(
+            networkManager.getColorsObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { colorCounts -> onColorChanged(colorCounts) },
+                    { this.view?.onNetworkError() },
+                    { this.view?.onNetworkError() })
+        )
     }
 
     override fun onRedClick(count: Long) {

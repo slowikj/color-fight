@@ -12,6 +12,7 @@ interface ColorPickerContract {
 
         fun updateBlueCounter(value: Long)
 
+        fun onNetworkError()
     }
 
     interface Presenter<V: View>: BaseContract.Presenter<V> {
@@ -22,5 +23,6 @@ interface ColorPickerContract {
         fun onBlueClick(count: Long)
 
         fun requestColorCountsUpdate()
+
     }
 }

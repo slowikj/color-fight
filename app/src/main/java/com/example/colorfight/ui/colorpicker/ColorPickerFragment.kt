@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import com.example.colorfight.R
 import com.example.colorfight.ui.base.BaseFragment
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.color_picker_fragment_layout.*
 import javax.inject.Inject
 
@@ -40,11 +41,6 @@ class ColorPickerFragment
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        presenter.requestColorCountsUpdate()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -67,6 +63,8 @@ class ColorPickerFragment
 
     override fun attachPresenter() {
         presenter.attach(this)
+        presenter.requestColorCountsUpdate()
+
     }
 
     override fun detachPresenter() {
@@ -86,4 +84,12 @@ class ColorPickerFragment
            }
            else -> super.onOptionsItemSelected(item)
        }
+
+    override fun onNetworkError() {
+        Snackbar
+            .make(coordinatorLayout, "Network error occurred", Snackbar.LENGTH_INDEFINITE)
+            .setAction("Retry") { presenter.requestColorCountsUpdate() }
+            .show()
+    }
+
 }
