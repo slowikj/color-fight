@@ -42,7 +42,7 @@ class EventSocket<INPUT_MESSAGE, OUTPUT_MESSAGE>(
     fun removeOnSocketListener(listener: OnSocketListener<OUTPUT_MESSAGE>) {
         onSocketListeners.remove(listener)
         if (onSocketListeners.size == 0 && webSocket.connection.isOpen) {
-            webSocket.close()
+            webSocket.closeBlocking()
         }
     }
 
@@ -75,6 +75,7 @@ class EventSocket<INPUT_MESSAGE, OUTPUT_MESSAGE>(
                 onSocketListeners.forEach { it.onError(ex) }
             }
         }
+        x.isReuseAddr = true
         return x
     }
 

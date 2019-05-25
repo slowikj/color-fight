@@ -51,7 +51,7 @@ class ColorPickerPresenter<V : ColorPickerContract.View> @Inject constructor(pri
                 .subscribe(
                     { colorCounts -> onColorChanged(colorCounts) },
                     { this.view?.onNetworkError() },
-                    {  })
+                    { this.view?.onNetworkError() })
         )
     }
 

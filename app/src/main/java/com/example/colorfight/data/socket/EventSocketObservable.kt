@@ -44,8 +44,8 @@ class EventSocketObservable<OUTPUT_MESSAGE>(
         override fun isDisposed(): Boolean = disposed
 
         override fun dispose() {
-            socket.removeOnSocketListener(this)
             disposed = true
+            socket.removeOnSocketListener(this)
         }
     }
 }
