@@ -18,16 +18,31 @@ class ColorPickerFragment
     override val layoutId: Int
         get() = R.layout.color_picker_fragment_layout
 
+    private val pendingActions: MutableList<() -> Unit> = mutableListOf()
+
     override fun updateRedCounter(value: Long) {
-        activity?.runOnUiThread {  redButton.text = value.toString() }
+        invokeOrAddAsPending { activity?.runOnUiThread {  redButton.text = value.toString() } }
     }
 
     override fun updateGreenCounter(value: Long) {
-        activity?.runOnUiThread { greenButton.text = value.toString()  }
+        invokeOrAddAsPending { activity?.runOnUiThread { greenButton.text = value.toString()  } }
     }
 
     override fun updateBlueCounter(value: Long) {
-        activity?.runOnUiThread { blueButton.text = value.toString() }
+        invokeOrAddAsPending { activity?.runOnUiThread { blueButton.text = value.toString() } }
+    }
+
+    private fun invokeOrAddAsPending(action: () -> Unit) {
+        if(isVisible) {
+            action()
+        } else {
+            pendingActions.add(action)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        presenter.requestColorCountsUpdate()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,7 +52,7 @@ class ColorPickerFragment
         redButton.setOnClickListener { presenter.onRedClick(1) }
         blueButton.setOnClickListener { presenter.onBlueClick(1) }
 
-        presenter.requestColorCountsUpdate()
+        pendingActions.forEach { it() }
     }
 
     override fun onAttach(context: Context?) {

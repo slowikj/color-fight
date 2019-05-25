@@ -6,14 +6,8 @@ import io.reactivex.Observable
 
 interface ColorManager {
 
-    interface OnColorsChangedListener {
-
-        fun onColorChanged(counts: ColorCounts)
-    }
-
     fun incrementColors(colorCounts: ColorCounts)
 
-    fun closeConnection()
+    fun getColorsObservable(): Observable<ColorCounts>
 
-    val onColorChangedListeners: MutableList<OnColorsChangedListener>
 }

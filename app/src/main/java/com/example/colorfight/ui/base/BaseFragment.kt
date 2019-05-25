@@ -1,6 +1,5 @@
 package com.example.colorfight.ui.base
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,8 +21,8 @@ abstract class BaseFragment : Fragment() {
             .build()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onStart() {
+        super.onStart()
         attachPresenter()
     }
 
@@ -34,9 +33,10 @@ abstract class BaseFragment : Fragment() {
                               savedInstanceState: Bundle?): View? =
             inflater.inflate(layoutId, container, false)
 
-    override fun onDestroyView() {
+
+    override fun onStop() {
         detachPresenter()
-        super.onDestroyView()
+        super.onStop()
     }
 
     abstract fun detachPresenter()

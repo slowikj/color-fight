@@ -11,10 +11,10 @@ interface ColorPickerContract {
         fun updateGreenCounter(value: Long)
 
         fun updateBlueCounter(value: Long)
+
     }
 
     interface Presenter<V: View>: BaseContract.Presenter<V> {
-
         fun onRedClick(count: Long)
 
         fun onGreenClick(count: Long)
