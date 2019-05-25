@@ -2,7 +2,7 @@ package com.example.colorfight.ui.colorpicker
 
 import android.content.Context
 import android.os.Bundle
-import android.view.View
+import android.view.*
 import com.example.colorfight.R
 import com.example.colorfight.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.color_picker_fragment_layout.*
@@ -45,6 +45,11 @@ class ColorPickerFragment
         presenter.requestColorCountsUpdate()
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        setHasOptionsMenu(true)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -67,4 +72,18 @@ class ColorPickerFragment
     override fun detachPresenter() {
         presenter.detach()
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        menu?.clear()
+        activity!!.menuInflater.inflate(R.menu.top_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean =
+       when(item?.itemId) {
+           R.id.menu_refresh -> {
+               presenter.requestColorCountsUpdate()
+               true
+           }
+           else -> super.onOptionsItemSelected(item)
+       }
 }
