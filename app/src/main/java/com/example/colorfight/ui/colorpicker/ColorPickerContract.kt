@@ -24,5 +24,6 @@ interface ColorPickerContract {
 
         fun requestColorCountsUpdate()
 
+        fun requestNetworkReconnection()
     }
 }

@@ -14,14 +14,7 @@ class ColorPickerPresenter<V : ColorPickerContract.View> @Inject constructor(pri
 
     override fun attach(view: V) {
         super.attach(view)
-        compositeDisposable?.add(
-            networkManager.getColorsObservable()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { colorCounts -> onColorChanged(colorCounts) },
-                    { this.view?.onNetworkError() },
-                    { this.view?.onNetworkError() })
-        )
+        startObservingColorCounts()
     }
 
     override fun onRedClick(count: Long) {
@@ -40,10 +33,26 @@ class ColorPickerPresenter<V : ColorPickerContract.View> @Inject constructor(pri
         networkManager.incrementColors(ColorCounts())
     }
 
+    override fun requestNetworkReconnection() {
+        initCompositeDisposable()
+        startObservingColorCounts()
+    }
+
     private fun onColorChanged(counts: ColorCounts) {
         view?.updateBlueCounter(counts.blue)
         view?.updateGreenCounter(counts.green)
         view?.updateRedCounter(counts.red)
+    }
+
+    private fun startObservingColorCounts() {
+        compositeDisposable.add(
+            networkManager.getColorsObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { colorCounts -> onColorChanged(colorCounts) },
+                    { this.view?.onNetworkError() },
+                    {  })
+        )
     }
 
 }

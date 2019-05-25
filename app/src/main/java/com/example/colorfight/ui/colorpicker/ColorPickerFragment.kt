@@ -64,7 +64,6 @@ class ColorPickerFragment
     override fun attachPresenter() {
         presenter.attach(this)
         presenter.requestColorCountsUpdate()
-
     }
 
     override fun detachPresenter() {
@@ -88,7 +87,7 @@ class ColorPickerFragment
     override fun onNetworkError() {
         Snackbar
             .make(coordinatorLayout, "Network error occurred", Snackbar.LENGTH_INDEFINITE)
-            .setAction("Retry") { presenter.requestColorCountsUpdate() }
+            .setAction("Retry") { presenter.requestNetworkReconnection() }
             .show()
     }
 

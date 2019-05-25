@@ -6,16 +6,21 @@ open class BasePresenter<V : BaseContract.View> : BaseContract.Presenter<V> {
 
     protected var view: V? = null
 
-    protected var compositeDisposable: CompositeDisposable? = null
+    protected var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun attach(view: V) {
         this.view = view
-        compositeDisposable = CompositeDisposable()
+        initCompositeDisposable()
     }
 
     override fun detach() {
-        compositeDisposable?.dispose()
         this.view = null
+        compositeDisposable.dispose()
+    }
+
+    protected fun initCompositeDisposable() {
+        compositeDisposable.dispose()
+        compositeDisposable = CompositeDisposable()
     }
 
 }
