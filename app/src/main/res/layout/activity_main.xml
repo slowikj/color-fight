@@ -18,6 +18,7 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:visibility="gone"
             android:id="@+id/navView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

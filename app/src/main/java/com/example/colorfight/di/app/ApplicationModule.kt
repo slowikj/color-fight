@@ -20,7 +20,7 @@ class ApplicationModule(private val application: Application) {
 
     private companion object {
 
-        val API_URI = URI("wss://n0obo1h1sj.execute-api.eu-central-1.amazonaws.com/colors")
+            val API_URI = URI("wss://n0obo1h1sj.execute-api.eu-central-1.amazonaws.com/colors")
     }
 
     @Provides
