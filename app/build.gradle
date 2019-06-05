@@ -10,7 +10,8 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.colorfight"
-        minSdkVersion 19
+        minSdkVersion 23
+        multiDexEnabled true
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -54,4 +55,11 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:2.7"
 
     implementation "org.java-websocket:Java-WebSocket:1.4.0"
+
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.google.firebase:firebase-messaging:18.0.0'
+
+    implementation 'com.android.support:multidex:1.0.3'
 }
+
+apply plugin: 'com.google.gms.google-services'
