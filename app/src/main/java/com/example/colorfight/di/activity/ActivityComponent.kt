@@ -1,7 +1,7 @@
 package com.example.colorfight.di.activity
 
 import com.example.colorfight.di.app.ApplicationComponent
-import com.example.colorfight.ui.MainActivity
+import com.example.colorfight.ui.main.MainActivity
 import dagger.Component
 
 @PerActivity

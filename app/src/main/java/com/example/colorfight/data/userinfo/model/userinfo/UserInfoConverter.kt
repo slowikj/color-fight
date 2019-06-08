@@ -9,13 +9,13 @@ object UserInfoConverter: Converter<UserInfoDTO, UserInfo> {
 	override fun convertToUI(dto: UserInfoDTO): UserInfo =
 		UserInfo(
 			deviceInfo = DeviceInfoConverter.convertToUI(dto.deviceInfoDTO),
-			location = DeviceLocationConverter.convertToUI(dto.locationDTO)
+			location = dto.locationDTO?.let{ DeviceLocationConverter.convertToUI(it) }
 		)
 
 	override fun convertToDTO(ui: UserInfo): UserInfoDTO =
 		UserInfoDTO(
 			deviceInfoDTO = DeviceInfoConverter.convertToDTO(ui.deviceInfo),
-			locationDTO = DeviceLocationConverter.convertToDTO(ui.location)
+			locationDTO = ui.location?.let {DeviceLocationConverter.convertToDTO(it) }
 		)
 
 }

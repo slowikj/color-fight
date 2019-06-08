@@ -2,6 +2,8 @@ package com.example.colorfight.di.activity
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
+import com.example.colorfight.ui.main.MainContract
+import com.example.colorfight.ui.main.MainPresenter
 import dagger.Module
 import dagger.Provides
 
@@ -14,4 +16,9 @@ class ActivityModule(private val activity: AppCompatActivity) {
 
     @Provides
     fun provideActivity(): AppCompatActivity = activity
+
+    @PerActivity
+    @Provides
+    fun provideMainActivityPresenter(presenter: MainPresenter<MainContract.View>): MainContract.Presenter<MainContract.View> =
+            presenter
 }
