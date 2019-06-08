@@ -19,3 +19,5 @@ fun AppCompatActivity.popLastFragment() {
 inline fun FragmentManager.invoke(func: FragmentTransaction.() -> FragmentTransaction) {
     beginTransaction().func().commit()
 }
+
+
