@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.edit
@@ -24,6 +25,7 @@ import com.example.colorfight.utils.SharedPreferencesKeys
 import com.example.colorfight.utils.addFragment
 import com.example.colorfight.utils.popLastFragment
 import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
@@ -35,6 +37,7 @@ import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Inject
 
+
 class MainActivity : AppCompatActivity(),
 	MainContract.View,
 	GoogleApiClient.ConnectionCallbacks,
@@ -42,12 +45,14 @@ class MainActivity : AppCompatActivity(),
 	companion object {
 
 		private const val PERMISSIONS_REQUEST_CODE = 1122
+
 		private val permissions: Array<out String> = arrayOf(
 			Manifest.permission.ACCESS_FINE_LOCATION,
 			Manifest.permission.ACCESS_COARSE_LOCATION
 		)
 
 	}
+
 	val activityComponent: ActivityComponent by lazy {
 		DaggerActivityComponent.builder()
 			.applicationComponent((application as ColorApp).applicationComponent)
@@ -104,7 +109,11 @@ class MainActivity : AppCompatActivity(),
 		}
 	}
 
-	override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+	override fun onRequestPermissionsResult(
+		requestCode: Int,
+		permissions: Array<out String>,
+		grantResults: IntArray
+	) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 		if (requestCode == PERMISSIONS_REQUEST_CODE) {
 			if (arePermissionsGranted(grantResults.toTypedArray())) {
@@ -116,12 +125,39 @@ class MainActivity : AppCompatActivity(),
 	}
 
 	private fun requestLocation() {
-		googleApiClient = GoogleApiClient.Builder(this)
-			.addConnectionCallbacks(this)
-			.addOnConnectionFailedListener(this)
-			.addApi(LocationServices.API)
-			.build()
-		googleApiClient.connect()
+		if(checkPlayServices()) {
+			googleApiClient = GoogleApiClient.Builder(this)
+				.addConnectionCallbacks(this)
+				.addOnConnectionFailedListener(this)
+				.addApi(LocationServices.API)
+				.build()
+			googleApiClient.connect()
+		} else {
+			requestSendUserInfo(null)
+		}
+	}
+
+
+	private fun checkPlayServices(): Boolean {
+		val googleApiAvailability = GoogleApiAvailability.getInstance()
+		val resultCode = googleApiAvailability.isGooglePlayServicesAvailable(this)
+
+		if (resultCode != ConnectionResult.SUCCESS) {
+			if (googleApiAvailability.isUserResolvableError(resultCode)) {
+				googleApiAvailability.getErrorDialog(
+					this,
+					resultCode,
+					1000
+				).show()
+			} else {
+				Toast.makeText(
+					applicationContext,
+					"This device is not supported for google play services.", Toast.LENGTH_LONG
+				).show()
+			}
+			return false
+		}
+		return true
 	}
 
 	@SuppressLint("MissingPermission")
@@ -129,8 +165,10 @@ class MainActivity : AppCompatActivity(),
 		val location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient)
 		requestSendUserInfo(
 			DeviceLocation(
-			lat = location.latitude,
-			lon = location.longitude))
+				lat = location.latitude,
+				lon = location.longitude
+			)
+		)
 	}
 
 	override fun onConnectionSuspended(p0: Int) {
