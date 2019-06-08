@@ -1,4 +1,4 @@
-package com.example.colorfight.data.color.model
+package com.example.colorfight.data.color.model.colorcounts
 
 data class ColorCounts(var red: Long = 0,
                        var green: Long = 0,

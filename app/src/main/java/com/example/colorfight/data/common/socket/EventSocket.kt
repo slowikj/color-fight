@@ -1,4 +1,4 @@
-package com.example.colorfight.data.socket
+package com.example.colorfight.data.common.socket
 
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.enums.ReadyState

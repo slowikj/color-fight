@@ -1,6 +1,4 @@
-package com.example.colorfight.data.color.model
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+package com.example.colorfight.data.color.model.colorcounts
 
 data class ColorCountsDTO(var red: Long = 0,
                           var green: Long = 0,

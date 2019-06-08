@@ -1,15 +1,21 @@
-package com.example.colorfight.data.socket
+package com.example.colorfight.data.common.socket
 
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 
 class EventSocketObservable<OUTPUT_MESSAGE>(
-    private val socket: EventSocket<*, OUTPUT_MESSAGE>) :
+    private val socket: EventSocket<*, OUTPUT_MESSAGE>
+) :
     Observable<OUTPUT_MESSAGE>() {
 
     override fun subscribeActual(observer: Observer<in OUTPUT_MESSAGE>) {
-        observer.onSubscribe(Subscription(socket, observer))
+        observer.onSubscribe(
+            Subscription(
+                socket,
+                observer
+            )
+        )
     }
 
     class Subscription<OUTPUT_MESSAGE>(

@@ -1,4 +1,4 @@
-package com.example.colorfight.data.color.model
+package com.example.colorfight.data.common
 
 interface Converter<DTO, UI> {
 
