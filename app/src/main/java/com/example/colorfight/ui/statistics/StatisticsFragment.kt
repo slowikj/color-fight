@@ -99,7 +99,8 @@ class StatisticsFragment : BaseFragment(), StatisticsContract.View {
 
 	private fun getBarNames(barCounts: List<Double>): Array<String> {
 		return (listOf("") +
-				listOf("red", "green", "blue").zip(barCounts) { color, count -> "$color (${count.toLong()})" } +
+				listOf("red", "green", "blue").zip(barCounts.subList(1, barCounts.size - 1)) {
+						color, count -> "$color (${count.toLong()})" } +
 				listOf(""))
 			.toTypedArray()
 	}
