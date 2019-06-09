@@ -1,6 +1,6 @@
-package com.example.colorfight.ui.services
+package com.example.colorfight.ui.common.services
 
-import com.example.colorfight.ui.notifications.showColorUpdateNotification
+import com.example.colorfight.ui.common.notifications.showColorUpdateNotification
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 

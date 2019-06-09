@@ -27,6 +27,7 @@ class StatisticsPresenter<V : StatisticsContract.View> @Inject constructor(priva
 
 	private fun onGetPreviousDayColorsError() {
 		Log.e(TAG, "onGetPreviousDayColorsError")
+		view?.onNetworkError()
 	}
 
 

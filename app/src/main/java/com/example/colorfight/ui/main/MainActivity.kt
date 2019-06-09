@@ -19,7 +19,7 @@ import com.example.colorfight.di.activity.ActivityModule
 import com.example.colorfight.di.activity.DaggerActivityComponent
 import com.example.colorfight.ui.about.AboutFragment
 import com.example.colorfight.ui.colorpicker.ColorPickerFragment
-import com.example.colorfight.ui.notifications.registerColorUpdateChannel
+import com.example.colorfight.ui.common.notifications.registerColorUpdateChannel
 import com.example.colorfight.ui.statistics.StatisticsFragment
 import com.example.colorfight.ui.common.SharedPreferencesKeys
 import com.example.colorfight.ui.common.addFragment

@@ -8,6 +8,8 @@ class StatisticsContract {
 	interface View: BaseContract.View {
 
 		fun setPreviousColors(colorCounts: ColorCounts)
+
+		fun onNetworkError()
 	}
 
 	interface Presenter<V: View>: BaseContract.Presenter<V> {

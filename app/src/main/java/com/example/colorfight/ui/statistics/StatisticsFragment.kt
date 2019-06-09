@@ -3,6 +3,7 @@ package com.example.colorfight.ui.statistics
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat.getColor
 import com.example.colorfight.R
 import com.example.colorfight.data.color.model.colorcounts.ColorCounts
@@ -56,6 +57,11 @@ class StatisticsFragment : BaseFragment(), StatisticsContract.View {
 		graphView.viewport.setMaxX(4.toDouble())
 
 		graphView.title = getString(R.string.previous_day_stats)
+	}
+
+	override fun onNetworkError() {
+		Toast.makeText(context, R.string.network_error_occurred, Toast.LENGTH_LONG)
+			.show()
 	}
 
 	override fun setPreviousColors(colorCounts: ColorCounts) {

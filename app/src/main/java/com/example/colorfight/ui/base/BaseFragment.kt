@@ -10,7 +10,7 @@ import com.example.colorfight.di.fragment.DaggerFragmentComponent
 import com.example.colorfight.di.fragment.FragmentComponent
 import com.example.colorfight.di.fragment.FragmentModule
 
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment : Fragment(), BaseContract.View {
 
     protected abstract val layoutId: Int
 

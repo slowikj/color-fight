@@ -1,4 +1,4 @@
-package com.example.colorfight.ui.notifications
+package com.example.colorfight.ui.common.notifications
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
