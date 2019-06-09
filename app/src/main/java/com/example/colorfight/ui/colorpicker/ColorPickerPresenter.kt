@@ -1,12 +1,9 @@
 package com.example.colorfight.ui.colorpicker
 
 import com.example.colorfight.data.NetworkManager
-import com.example.colorfight.data.color.ColorManager
-import com.example.colorfight.data.color.model.ColorCounts
+import com.example.colorfight.data.color.model.colorcounts.ColorCounts
 import com.example.colorfight.ui.base.BasePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 class ColorPickerPresenter<V : ColorPickerContract.View> @Inject constructor(private val networkManager: NetworkManager) :

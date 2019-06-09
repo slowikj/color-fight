@@ -1,5 +1,6 @@
 package com.example.colorfight.ui.main
 
+import android.util.Log
 import com.example.colorfight.data.NetworkManager
 import com.example.colorfight.data.userinfo.model.userinfo.UserInfo
 import com.example.colorfight.ui.base.BasePresenter
@@ -10,6 +11,11 @@ import javax.inject.Inject
 
 class MainPresenter<V : MainContract.View> @Inject constructor(private val networkManager: NetworkManager) :
 	BasePresenter<V>(), MainContract.Presenter<V> {
+
+	companion object {
+
+		val TAG = MainPresenter::class.java.toString()
+	}
 
 	override fun sendUserInfo(userInfo: UserInfo) {
 		compositeDisposable.add(
@@ -27,7 +33,7 @@ class MainPresenter<V : MainContract.View> @Inject constructor(private val netwo
 	}
 
 	private fun onSendUserInfoCompleted() {
-		Logger.getAnonymousLogger().log(Level.INFO, "completed")
+		Log.i(TAG, "sending userInfo completed")
 	}
 
 }

@@ -102,11 +102,11 @@ class MainActivity : AppCompatActivity(),
 	override fun onStart() {
 		super.onStart()
 		attachPresenter()
-		if (arePermissionsGranted(permissions)) {
-			requestLocation()
-		} else {
-			requestPermissions(permissions)
-		}
+//		if (arePermissionsGranted(permissions)) {
+//			requestLocation()
+//		} else {
+//			requestPermissions(permissions)
+//		}
 	}
 
 	override fun onRequestPermissionsResult(
