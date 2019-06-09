@@ -63,6 +63,33 @@ class MainActivity : AppCompatActivity(),
 			.build()
 	}
 
+	private val locationCallback = object: LocationCallback() {
+		override fun onLocationResult(p0: LocationResult?) {
+			super.onLocationResult(p0)
+			onLocationChanged(p0?.locations?.firstOrNull { it != null })
+		}
+
+		private fun onLocationChanged(location: Location?) {
+			if (location != null) {
+				Toast.makeText(baseContext, location.toString(), Toast.LENGTH_LONG).show()
+				requestSendUserInfo(
+					DeviceLocation(
+						lat = location.latitude,
+						lon = location.longitude
+					)
+				)
+			} else {
+				requestSendUserInfo(null)
+			}
+
+			removeLocationUpdates()
+		}
+
+		override fun onLocationAvailability(p0: LocationAvailability?) {
+			super.onLocationAvailability(p0)
+		}
+	}
+
 	@Inject
 	lateinit var presenter: MainContract.Presenter<MainContract.View>
 
@@ -170,24 +197,10 @@ class MainActivity : AppCompatActivity(),
 			.requestLocationUpdates(createLocationRequest(), locationCallback, Looper.getMainLooper())
 	}
 
-	private fun onLocationChanged(location: Location?) {
-		try {
-			Toast.makeText(this, location.toString(), Toast.LENGTH_LONG).show()
-			requestSendUserInfo(
-				DeviceLocation(
-					lat = location!!.latitude,
-					lon = location.longitude
-				)
-			)
-		} catch (e: Exception) {
-			Toast.makeText(this, "err: ${location.toString()}", Toast.LENGTH_LONG).show()
-		}
-	}
-
 	private fun createLocationRequest(): LocationRequest =
 		LocationRequest().apply {
-			interval = 3000
-			fastestInterval = 1500
+			interval = 1000
+			fastestInterval = 500
 			priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 		}
 
@@ -218,25 +231,15 @@ class MainActivity : AppCompatActivity(),
 	override fun onStop() {
 		googleApiClient.unregisterConnectionCallbacks(this)
 		googleApiClient.unregisterConnectionFailedListener(this)
-		LocationServices.getFusedLocationProviderClient(this).removeLocationUpdates(locationCallback)
+		removeLocationUpdates()
 		googleApiClient.disconnect()
 
 		detachPresenter()
 		super.onStop()
 	}
 
-	private val locationCallback = MyLocationCallback()
-
-	inner class MyLocationCallback(): LocationCallback() {
-
-		override fun onLocationResult(p0: LocationResult?) {
-			super.onLocationResult(p0)
-			onLocationChanged(p0?.locations?.firstOrNull { it != null })
-		}
-
-		override fun onLocationAvailability(p0: LocationAvailability?) {
-			super.onLocationAvailability(p0)
-		}
+	private fun removeLocationUpdates() {
+		LocationServices.getFusedLocationProviderClient(this).removeLocationUpdates(locationCallback)
 	}
 
 	private fun detachPresenter() {
@@ -268,7 +271,6 @@ class MainActivity : AppCompatActivity(),
 			super.onBackPressed()
 		}
 	}
-
 
 	private fun requestPermissions(permissions: Array<out String>) {
 		if (!arePermissionsGranted(permissions)) {
