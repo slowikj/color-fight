@@ -7,7 +7,7 @@ import retrofit2.http.POST
 
 interface UserInfoService {
 
-	@POST("mobile-phone")
+	@POST("device-data")
 	fun addUserInfo(@Body userInfoDTO: UserInfoDTO): Completable
 
 }

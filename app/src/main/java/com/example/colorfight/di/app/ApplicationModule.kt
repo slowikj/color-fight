@@ -34,9 +34,9 @@ class ApplicationModule(private val application: Application) {
 
 		val COLOR_INC_SOCKET_URI = URI("wss://n0obo1h1sj.execute-api.eu-central-1.amazonaws.com/colors")
 
-		const val STATS_URI = "https://a1o99i5sgg.execute-api.us-east-2.amazonaws.com/default/"
+		const val STATS_URI = "https://uwz8630959.execute-api.eu-central-1.amazonaws.com/default/"
 
-		const val USER_INFO_API_URI = "https://uwz8630959.execute-api.eu-central-1.amazonaws.com/default/"
+		const val USER_INFO_API_URI = "https://dcbnklyyud.execute-api.eu-central-1.amazonaws.com/default/"
 
 		const val READ_TIMEOUT_SEC: Long = 5
 
