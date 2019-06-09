@@ -21,9 +21,9 @@ import com.example.colorfight.ui.about.AboutFragment
 import com.example.colorfight.ui.colorpicker.ColorPickerFragment
 import com.example.colorfight.ui.notifications.registerColorUpdateChannel
 import com.example.colorfight.ui.statistics.StatisticsFragment
-import com.example.colorfight.utils.SharedPreferencesKeys
-import com.example.colorfight.utils.addFragment
-import com.example.colorfight.utils.popLastFragment
+import com.example.colorfight.ui.common.SharedPreferencesKeys
+import com.example.colorfight.ui.common.addFragment
+import com.example.colorfight.ui.common.popLastFragment
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.GoogleApiClient

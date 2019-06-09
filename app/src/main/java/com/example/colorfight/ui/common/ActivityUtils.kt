@@ -1,4 +1,4 @@
-package com.example.colorfight.utils
+package com.example.colorfight.ui.common
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment

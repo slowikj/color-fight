@@ -1,4 +1,4 @@
-package com.example.colorfight.utils
+package com.example.colorfight.data.common
 
 import io.reactivex.Completable
 import io.reactivex.Observable

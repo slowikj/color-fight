@@ -1,4 +1,4 @@
-package com.example.colorfight.utils
+package com.example.colorfight.ui.common
 
 object SharedPreferencesKeys {
 

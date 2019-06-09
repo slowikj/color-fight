@@ -6,8 +6,8 @@ import android.view.*
 import com.example.colorfight.R
 import com.example.colorfight.ui.base.BaseFragment
 import com.example.colorfight.ui.common.ButtonAnimator
-import com.example.colorfight.utils.SharedPreferencesKeys
-import com.example.colorfight.utils.getSharedPreferences
+import com.example.colorfight.ui.common.SharedPreferencesKeys
+import com.example.colorfight.ui.common.getSharedPreferences
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.color_picker_fragment_layout.*
 import javax.inject.Inject

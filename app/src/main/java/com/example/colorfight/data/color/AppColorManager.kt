@@ -7,7 +7,7 @@ import com.example.colorfight.data.color.model.colorcounts.ColorRequestDTO
 import com.example.colorfight.data.color.services.StatisticsService
 import com.example.colorfight.data.common.socket.EventSocket
 import com.example.colorfight.data.common.socket.EventSocketObservable
-import com.example.colorfight.utils.prepareNoneToApiObservable
+import com.example.colorfight.data.common.prepareNoneToApiObservable
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
