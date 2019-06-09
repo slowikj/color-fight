@@ -225,7 +225,7 @@ class MainActivity : AppCompatActivity(),
 		super.onStop()
 	}
 
-	private val locationCallback = LocationCallback()
+	private val locationCallback = MyLocationCallback()
 
 	inner class MyLocationCallback(): LocationCallback() {
 
