@@ -71,7 +71,6 @@ class MainActivity : AppCompatActivity(),
 
 		private fun onLocationChanged(location: Location?) {
 			if (location != null) {
-				Toast.makeText(baseContext, location.toString(), Toast.LENGTH_LONG).show()
 				requestSendUserInfo(
 					DeviceLocation(
 						lat = location.latitude,
@@ -192,7 +191,6 @@ class MainActivity : AppCompatActivity(),
 
 	@SuppressLint("MissingPermission")
 	override fun onConnected(p0: Bundle?) {
-		Toast.makeText(this, "onConnected", Toast.LENGTH_LONG).show()
 		LocationServices.getFusedLocationProviderClient(this)
 			.requestLocationUpdates(createLocationRequest(), locationCallback, Looper.getMainLooper())
 	}
