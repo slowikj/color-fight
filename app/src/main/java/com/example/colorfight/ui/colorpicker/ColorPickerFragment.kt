@@ -1,6 +1,7 @@
 package com.example.colorfight.ui.colorpicker
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import com.example.colorfight.R
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 class ColorPickerFragment
 	: BaseFragment(),
-	ColorPickerContract.View {
+	ColorPickerContract.View, SharedPreferences.OnSharedPreferenceChangeListener {
 
 	@Inject
 	lateinit var presenter: ColorPickerContract.Presenter<ColorPickerContract.View>
@@ -74,6 +75,8 @@ class ColorPickerFragment
 			getSharedPreferences(Context.MODE_PRIVATE).getString(SharedPreferencesKeys.DEVICE_ID, "?")
 		)
 
+		getSharedPreferences(Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(this)
+
 		pendingActions.forEach { it() }
 	}
 
@@ -110,6 +113,12 @@ class ColorPickerFragment
 			.make(coordinatorLayout, getString(R.string.network_error_occurred), Snackbar.LENGTH_INDEFINITE)
 			.setAction(getString(R.string.retry_action)) { presenter.requestColorCountsUpdate() }
 			.show()
+	}
+
+	override fun onSharedPreferenceChanged(pref: SharedPreferences, key: String) {
+		if (key == SharedPreferencesKeys.DEVICE_ID) {
+			deviceIdEditText.setText(getSharedPreferences(Context.MODE_PRIVATE).getString(key, "?"))
+		}
 	}
 
 }

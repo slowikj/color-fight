@@ -6,6 +6,7 @@ object DeviceInfoConverter: Converter<DeviceInfoDTO, DeviceInfo> {
 
 	override fun convertToUI(dto: DeviceInfoDTO): DeviceInfo =
 		DeviceInfo(
+			firebaseDeviceId = dto.firebaseDeviceId,
 			version = dto.version,
 			product = dto.product,
 			brand = dto.brand,
@@ -14,6 +15,7 @@ object DeviceInfoConverter: Converter<DeviceInfoDTO, DeviceInfo> {
 
 	override fun convertToDTO(ui: DeviceInfo): DeviceInfoDTO =
 		DeviceInfoDTO(
+			firebaseDeviceId = ui.firebaseDeviceId,
 			version = ui.version,
 			product = ui.product,
 			brand = ui.brand,

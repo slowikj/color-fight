@@ -218,6 +218,7 @@ class MainActivity : AppCompatActivity(),
 
 	private fun getDeviceInfo(): DeviceInfo =
 		DeviceInfo(
+			firebaseDeviceId = getPreferences(Context.MODE_PRIVATE).getString(SharedPreferencesKeys.DEVICE_ID, null),
 			version = android.os.Build.VERSION.SDK_INT.toString(),
 			device = android.os.Build.DEVICE,
 			product = android.os.Build.PRODUCT,
