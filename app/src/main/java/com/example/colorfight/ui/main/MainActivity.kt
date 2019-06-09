@@ -4,7 +4,9 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
+import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -27,7 +29,7 @@ import com.example.colorfight.ui.common.popLastFragment
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.iid.FirebaseInstanceId
@@ -42,6 +44,7 @@ class MainActivity : AppCompatActivity(),
 	MainContract.View,
 	GoogleApiClient.ConnectionCallbacks,
 	GoogleApiClient.OnConnectionFailedListener {
+
 	companion object {
 
 		private const val PERMISSIONS_REQUEST_CODE = 1122
@@ -53,7 +56,7 @@ class MainActivity : AppCompatActivity(),
 
 	}
 
-	val activityComponent: ActivityComponent by lazy {
+	private val activityComponent: ActivityComponent by lazy {
 		DaggerActivityComponent.builder()
 			.applicationComponent((application as ColorApp).applicationComponent)
 			.activityModule(ActivityModule(this))
@@ -95,6 +98,12 @@ class MainActivity : AppCompatActivity(),
 			navView.selectedItemId = R.id.navigation_color_picker
 		}
 
+		googleApiClient = GoogleApiClient.Builder(this)
+			.addConnectionCallbacks(this)
+			.addOnConnectionFailedListener(this)
+			.addApi(LocationServices.API)
+			.build()
+
 		prepareFirebaseDeviceId()
 		registerColorUpdateChannel()
 	}
@@ -102,11 +111,11 @@ class MainActivity : AppCompatActivity(),
 	override fun onStart() {
 		super.onStart()
 		attachPresenter()
-//		if (arePermissionsGranted(permissions)) {
-//			requestLocation()
-//		} else {
-//			requestPermissions(permissions)
-//		}
+		if (arePermissionsGranted(permissions)) {
+			requestLocation()
+		} else {
+			requestPermissions(permissions)
+		}
 	}
 
 	override fun onRequestPermissionsResult(
@@ -125,18 +134,12 @@ class MainActivity : AppCompatActivity(),
 	}
 
 	private fun requestLocation() {
-		if(checkPlayServices()) {
-			googleApiClient = GoogleApiClient.Builder(this)
-				.addConnectionCallbacks(this)
-				.addOnConnectionFailedListener(this)
-				.addApi(LocationServices.API)
-				.build()
+		if (checkPlayServices()) {
 			googleApiClient.connect()
 		} else {
 			requestSendUserInfo(null)
 		}
 	}
-
 
 	private fun checkPlayServices(): Boolean {
 		val googleApiAvailability = GoogleApiAvailability.getInstance()
@@ -151,7 +154,7 @@ class MainActivity : AppCompatActivity(),
 				).show()
 			} else {
 				Toast.makeText(
-					applicationContext,
+					this,
 					"This device is not supported for google play services.", Toast.LENGTH_LONG
 				).show()
 			}
@@ -162,14 +165,31 @@ class MainActivity : AppCompatActivity(),
 
 	@SuppressLint("MissingPermission")
 	override fun onConnected(p0: Bundle?) {
-		val location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient)
-		requestSendUserInfo(
-			DeviceLocation(
-				lat = location.latitude,
-				lon = location.longitude
-			)
-		)
+		Toast.makeText(this, "onConnected", Toast.LENGTH_LONG).show()
+		LocationServices.getFusedLocationProviderClient(this)
+			.requestLocationUpdates(createLocationRequest(), locationCallback, Looper.getMainLooper())
 	}
+
+	private fun onLocationChanged(location: Location?) {
+		try {
+			Toast.makeText(this, location.toString(), Toast.LENGTH_LONG).show()
+			requestSendUserInfo(
+				DeviceLocation(
+					lat = location!!.latitude,
+					lon = location.longitude
+				)
+			)
+		} catch (e: Exception) {
+			Toast.makeText(this, "err: ${location.toString()}", Toast.LENGTH_LONG).show()
+		}
+	}
+
+	private fun createLocationRequest(): LocationRequest =
+		LocationRequest().apply {
+			interval = 3000
+			fastestInterval = 1500
+			priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+		}
 
 	override fun onConnectionSuspended(p0: Int) {
 		requestSendUserInfo(null)
@@ -196,8 +216,27 @@ class MainActivity : AppCompatActivity(),
 	}
 
 	override fun onStop() {
+		googleApiClient.unregisterConnectionCallbacks(this)
+		googleApiClient.unregisterConnectionFailedListener(this)
+		LocationServices.getFusedLocationProviderClient(this).removeLocationUpdates(locationCallback)
+		googleApiClient.disconnect()
+
 		detachPresenter()
 		super.onStop()
+	}
+
+	private val locationCallback = LocationCallback()
+
+	inner class MyLocationCallback(): LocationCallback() {
+
+		override fun onLocationResult(p0: LocationResult?) {
+			super.onLocationResult(p0)
+			onLocationChanged(p0?.locations?.firstOrNull { it != null })
+		}
+
+		override fun onLocationAvailability(p0: LocationAvailability?) {
+			super.onLocationAvailability(p0)
+		}
 	}
 
 	private fun detachPresenter() {
