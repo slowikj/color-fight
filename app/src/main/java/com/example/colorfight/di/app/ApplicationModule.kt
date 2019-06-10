@@ -8,7 +8,7 @@ import com.example.colorfight.data.color.AppColorManager
 import com.example.colorfight.data.color.ColorManager
 import com.example.colorfight.data.color.model.colorcounts.ColorCountsDTO
 import com.example.colorfight.data.color.model.colorcounts.ColorRequestDTO
-import com.example.colorfight.data.color.services.StatisticsService
+import com.example.colorfight.data.color.services.*
 import com.example.colorfight.data.common.socket.EventSocket
 import com.example.colorfight.data.common.socket.EventSocketObservable
 import com.example.colorfight.data.userinfo.AppUserInfoManager
@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import dagger.Module
 import dagger.Provides
+import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
@@ -57,13 +58,13 @@ class ApplicationModule(private val application: Application) {
 	@Provides
 	@PerApp
 	fun provideColorManager(
-		socketObservable: EventSocketObservable<ColorCountsDTO>,
-		socketEvent: EventSocket<ColorRequestDTO, ColorCountsDTO>,
+		getColorsService: GetColorsService,
+		sendColorsService: SendColorsService,
 		statisticsService: StatisticsService
 	): ColorManager =
 		AppColorManager(
-			colorEventObservable = socketObservable,
-			colorEventSocket = socketEvent,
+			getColorsService = getColorsService,
+			sendColorsService = sendColorsService,
 			statisticsService = statisticsService
 		)
 
@@ -73,17 +74,21 @@ class ApplicationModule(private val application: Application) {
 
 	@Provides
 	@PerApp
-	fun provideColorEventSocketObservable(eventSocket: EventSocket<ColorRequestDTO, ColorCountsDTO>)
-			: EventSocketObservable<ColorCountsDTO> =
-		EventSocketObservable(eventSocket)
+	fun provideGetColorsService(eventSocket: EventSocket<ColorRequestDTO, ColorCountsDTO>)
+			: GetColorsService = AppGetColorsService(EventSocketObservable(eventSocket))
+
+
+	@Provides
+	@PerApp
+	fun provideSendColorsService(eventSocket: EventSocket<ColorRequestDTO, ColorCountsDTO>)
+			: SendColorsService = AppSendColorsService(eventSocket)
 
 	@Provides
 	@PerApp
 	fun provideColorEventSocket(
 		@IncrementColors uri: URI,
 		objectMapper: ObjectMapper
-	)
-			: EventSocket<ColorRequestDTO, ColorCountsDTO> =
+	): EventSocket<ColorRequestDTO, ColorCountsDTO> =
 		EventSocket(
 			uri = uri,
 			inputMessageSerializer = { cc -> objectMapper.writeValueAsString(cc) },
